@@ -3,7 +3,7 @@ const express = require('express');
 var router = express.Router();
 
 var contadorVisitas = (req,res,next)=>{
-  
+
   if (req.session.vistas == undefined) {
     req.session.vistas = 0
   }
@@ -30,6 +30,12 @@ router.get("/", (req,res)=>{
 router.get("/:animal", (req,res)=>{
   var animal = req.params.animal;
   res.send("Consultando animal: "+animal)
+})
+
+router.post("/",(req,res,next)=>{
+  console.log(req.body);
+  console.log(req.output);
+  res.send("Petición recibida.")
 })
 
 module.exports = router;

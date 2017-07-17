@@ -119,7 +119,11 @@ class Cliente {
     //valida si hay data en caso que halla se escribe
     //la peticion con el metodo write
     if (data != undefined && data != null) {
-      peticion.write(JSON.stringify(data))
+      var body = JSON.stringify(data);
+      peticion.setHeader("Content-Length", Buffer.byteLength(body))
+      peticion.setHeader("Content-Type", "application/json")
+      peticion.write(body)
+      console.log(peticion);
     }
 
     //inicializa la peticion
