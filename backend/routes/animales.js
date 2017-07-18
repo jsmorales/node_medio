@@ -45,7 +45,7 @@ router.get("/", (req,res)=>{
 
 //esta ruta permite que sea dinámico el nombre de usuario
 //permitiendo el enrutamiento variable
-router.get("/:animal", (req,res)=>{
+router.get("/:animal", (req,res) => {
   var animal = req.params.animal;
   res.send("Consultando animal: "+animal)
 })
