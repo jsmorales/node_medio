@@ -1,8 +1,10 @@
 const Cliente = require('./cliente.js');
 
-var clienteGitHub = new Cliente("localhost","3000","http");
+//var clienteGitHub = new Cliente("localhost","3000","http");
 
-console.log(clienteGitHub);
+//console.log(clienteGitHub);
+
+var cliente = new Cliente("localhost","8080","http");
 
 //autenticar el cliente con basicAuth
 //clienteGitHub.autenticarBasic("jsmorales","3115208657a")
@@ -16,9 +18,9 @@ console.log(clienteGitHub);
 })*/
 
 // /jsmorales/node_player_desktop/issues/1
-clienteGitHub.post("/animal",{
-  nombre: "Luna",
-  especie: "Perro"
+cliente.post("/animal",{
+  nombre: "Red",
+  especie: "Tigre Dientes de Sable"
 }, (respuesta)=>{
   console.log(respuesta);
 })

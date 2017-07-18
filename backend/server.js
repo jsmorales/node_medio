@@ -1,9 +1,14 @@
 const express = require("express");
-
+var bodyParser = require("body-parser")
 var app = express();
 
 //para las sessiones se instala express-session
 var session = require("express-session")
+
+//uso para poder obtener los parametros que se envien metodo
+//POST y en forma json
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}))
 
 //se extiende la app y se necesita para funcionar por lo menos
 //un parámetro json con el valor secret para firmar las cookies
@@ -29,6 +34,6 @@ app.use("/users",users)
 var animal = require("./routes/animales.js")
 app.use("/animal",animal)
 
-app.listen("3000", ()=>{
+app.listen("8080", ()=>{
   console.log("Express on-line.");
 })

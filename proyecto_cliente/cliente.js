@@ -57,7 +57,7 @@ class Cliente {
   }
 
   //Método para realizar peticiones de tipo get
-  get(uri, callback){
+  get(uri, data, callback){
 
     var opciones = {
       hostname: this.host,
@@ -83,52 +83,34 @@ class Cliente {
   }
 
   //para el manejo de peticiones
-  request(opciones, data, callback){
+  // request (manejo de peticiones)
+  request(opciones, data, callback) {
+      // http o https
+      var http = require(this.protocolo); //http, o https
+      var respuesta = {
+          status: null,
+          body: "",
+          headers: null
+      };
+      var peticion = http.request(opciones, (canalRespuesta) => {
+          canalRespuesta.on('data', (chunk) => {
+              respuesta.body += chunk;
+          });
+          canalRespuesta.on('end', () => {
+              respuesta.status = canalRespuesta.statusCode;
+              respuesta.headers = canalRespuesta.headers;
+              //fs.appendFile(this.logDir + "/cliente.log", "lorem ipsum");
+              callback(respuesta);
+          });
+      });
 
-    //http o https definido en la instancia
-    var http = require(this.protocolo)
-
-    //objeto de respuesta al request
-    var respuesta = {
-      status: null,
-      body: "",
-      headers: null
-    }
-
-    var peticion = http.request(opciones, (canalRespuesta)=>{
-
-      //recibiendo info del server
-      canalRespuesta.on("data", (chunk)=>{
-          respuesta.body += chunk;
-      })
-
-      canalRespuesta.on("end", ()=>{
-          //termino la transmision de datos
-          respuesta.status = canalRespuesta.statusCode;
-          respuesta.headers = canalRespuesta.headers;
-
-          /*para crear los archivos que vallan dentro de la carpeta log
-          fs.appendFile(this.logDir+"/cliente.log","lorem ipsum");
-          esta funcion añade info al archivo recien creado.
-          */
-          callback(respuesta)
-      })
-
-    })
-
-    //valida si hay data en caso que halla se escribe
-    //la peticion con el metodo write
-    if (data != undefined && data != null) {
-      var body = JSON.stringify(data);
-      peticion.setHeader("Content-Length", Buffer.byteLength(body))
-      peticion.setHeader("Content-Type", "application/json")
-      peticion.write(body)
-      console.log(peticion);
-    }
-
-    //inicializa la peticion
-    peticion.end();
-
+      if (data != undefined && data != null) {
+          var body = JSON.stringify(data);
+          peticion.setHeader('Content-Length', Buffer.byteLength(body));
+          peticion.setHeader('Content-Type', 'application/json');
+          peticion.write(body);
+      }
+      peticion.end();
   }
   //----------------------------
 }
